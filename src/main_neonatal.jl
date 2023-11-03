@@ -29,13 +29,8 @@ sys = structural_simplify(sys)
 
 #print(states(sys))
 
-@unpack Na_m, Na_h, Na_j, ICa_HH4, ICa_HH5, ICa_HH6, ICa_HH7, Itos_x, Itos_y, Itof_x, Itof_y, Ikr, IKs, RyR_R, RyR_O, RyR_I, NaBj, NaBsl,  
-        TnCL, TnCHc, TnCHm, CaM, Myosin_ca, Myosin_mg, SRB, SLLj, SLLsl, SLHj, SLHsl, Csqn, Ca_sr, Naj, Nasl, Nai, Ki, Ca_j, Ca_sl, Cai, Vm, 
-        Itos_r, influx_LTCC, influx_PMCA, influx_NCX, influx_ICa, Na_late_h, CNa2, CNa1, ONa, IFNa, I1Na, CNa3, ICNa2, ICNa3, LONa, LCNa1, LCNa2, LCNa3, 
-        C2_m1j, C1_m1j, I1Ca_m1j, I2Ca_m1j, I1Ba_m1j, I2Ba_m1j, C2_m2j, C1_m2j, I1Ca_m2j, I2Ca_m2j, I1Ba_m2j, I2Ba_m2j, C2_m1sl, C1_m1sl, I1Ca_m1sl, 
-        I2Ca_m1sl, I1Ba_m1sl, I2Ba_m1sl, C2_m2sl, C1_m2sl, I1Ca_m2sl, I2Ca_m2sl, I1Ba_m2sl, I2Ba_m2sl, IKs_x, IKs1_y, Iss, IKs2_y,  # ecc_ODEfile
-        CaM_dyad, Ca2CaM_dyad, Ca4CaM_dyad, CaMB_dyad, Ca2CaMB_dyad, Ca4CaMB_dyad, Pb2_dyad, Pb_dyad, 
-        Pt_dyad, Pt2_dyad, Pa_dyad, Ca4CaN_dyad, CaMCa4CaN_dyad, Ca2CaMCa4CaN_dyad, Ca4CaMCa4CaN_dyad,                              # camdyad_ODEfile
+@unpack Cai, i_CaJSR, CaNSR, V, Nai, Ki, i_b, i_g, i_d, i_f, i_fca, i_y, i_r, i_s, i_sslow,
+        i_Nam, i_Nah, i_Naj, i_PO1, i_PO2, i_PC2, i_nKs, i_CK1, i_CK2, i_OK, i_IK, Cai_sub_SR, Cai_sub_SL,                          # ecc_ODEfile
         CaM_sl, Ca2CaM_sl, Ca4CaM_sl, CaMB_sl, Ca2CaMB_sl, Ca4CaMB_sl, Pb2_sl, Pb_sl, 
         Pt_sl, Pt2_sl, Pa_sl, Ca4CaN_sl, CaMCa4CaN_sl, Ca2CaMCa4CaN_sl, Ca4CaMCa4CaN_sl,                                            # camsl_ODEfile
         CaM_cyt, Ca2CaM_cyt, Ca4CaM_cyt, CaMB_cyt, Ca2CaMB_cyt, Ca4CaMB_cyt, Pb2_cyt, Pb_cyt, 
@@ -48,23 +43,19 @@ sys = structural_simplify(sys)
         
 
 oprob = ODEProblem(sys, 
-        [Na_m => 1.94e-3, Na_h => 0.981, Na_j => 0.987, ICa_HH4 => 7.02e-6, ICa_HH5 => 1.00068, ICa_HH6 => 2.7e-2, 
-        ICa_HH7 => 1.6e-2, Itos_x => 2.02e-3, Itos_y => 0.99, Itof_x => 2.02e-3, Itof_y => 0.9992, Ikr => 1.11e-2, 
-        IKs => 7.37e-3, RyR_R => 0.698, RyR_O => 4.24e-6, RyR_I => 1.84e-6, NaBj => 3.993, NaBsl => 0.87, TnCL => 9.26e-3, 
-        TnCHc => 0.118, TnCHm => 1.03e-2, CaM => 2.53e-4, Myosin_ca => 1.989e-3, Myosin_mg => 0.138, SRB => 2.26e-3, 
-        SLLj => 2.2e-2, SLLsl => 1.35e-2, SLHj => 0.127, SLHsl => 0.142, Csqn => 1.177, Ca_sr => 0.503, Naj => 11.182, 
-        Nasl => 11.182, Nai => 11.182, Ki => 134.99, Ca_j => 5.34e-4, Ca_sl => 1.46e-4, Cai => 9.12e-5, Vm => -83.632, 
-        Itos_r => 0.946, influx_LTCC => 5.59e4, influx_PMCA => -3.38e4, influx_NCX => -3.096e5, influx_ICa => 2.875e5, 
-        Na_late_h => 0.222, CNa2 => 0.105, CNa1 => 1.92e-3, ONa => 4.15e-5, IFNa => 0.303, I1Na => 0.566, CNa3 => 1.01e-2, 
-        ICNa2 => 7.01e-5, ICNa3 => 8.62e-8, LONa => 1.47e-4, LCNa1 => 2.64e-6, LCNa2 => 1.82e-8, LCNa3 => 2.17e-11, 
-        C2_m1j => 0.939, C1_m1j => 2.71e-5, I1Ca_m1j => 9.17e-5, I2Ca_m1j => 6.71e-4, I1Ba_m1j => 4.99e-5, I2Ba_m1j => 5.97e-2,
-        C2_m2j => 0.939, C1_m2j => 2.71e-5, I1Ca_m2j => 9.13e-5, I2Ca_m2j => 6.69e-4, I1Ba_m2j => 4.99e-5, I2Ba_m2j => 5.97e-2, 
-        C2_m1sl => 0.94, C1_m1sl => 2.71e-5, I1Ca_m1sl => 3.88e-6, I2Ca_m1sl => 2.81e-5, I1Ba_m1sl => 5.00e-5, I2Ba_m1sl => 5.98e-2,
-        C2_m2sl => 0.94, C1_m2sl => 2.71e-5, I1Ca_m2sl => 4.17e-6, I2Ca_m2sl => 3.02e-5, I1Ba_m2sl => 5.00e-5, I2Ba_m2sl => 5.98e-2, 
-        IKs_x => 7.37e-3, IKs1_y => 0.99, Iss => 7.37e-3, IKs2_y => 0.995, CaM_dyad => 388.68, Ca2CaM_dyad => 13.02, 
-        Ca4CaM_dyad => 8.68e-3, CaMB_dyad => 0.0, Ca2CaMB_dyad => 0.0, Ca4CaMB_dyad => 0.0, Pb2_dyad => 0.67, Pb_dyad => 7.09e-2, 
-        Pt_dyad => 2.42e-5, Pt2_dyad => 8.73e-9, Pa_dyad => 3.37e-9, Ca4CaN_dyad => 7.35e-5, CaMCa4CaN_dyad => 2.43e-3, 
-        Ca2CaMCa4CaN_dyad => 0.013, Ca4CaMCa4CaN_dyad => 3.6, CaM_sl => 4.42e-2, Ca2CaM_sl => 7.34e-5, Ca4CaM_sl => 8.89e-9, 
+        [Cai[1] => 0.22245, Cai[2] => 0.22275, Cai[3] => 0.22302, Cai[4] => 0.22328, Cai[5] => 0.22352, Cai[6] => 0.22375, 
+        Cai[7] => 0.22395, Cai[8] => 0.22413, Cai[9] => 0.2243, Cai[10] => 0.22446, Cai[11] => 0.22459, Cai[12] => 0.22471, 
+        Cai[13] => 0.22482, Cai[14] => 0.22491, Cai[15] => 0.22499, Cai[16] => 0.22505, Cai[17] => 0.2251, Cai[18] => 0.22514, 
+        Cai[19] => 0.22517, Cai[20] => 0.22518, Cai[21] => 0.22518, Cai[22] => 0.22517, Cai[23] => 0.22515, Cai[24] => 0.22511, 
+        Cai[25] => 0.22507, Cai[26] => 0.22501, Cai[27] => 0.22495, Cai[28] => 0.22487, Cai[29] => 0.22478, Cai[30] => 0.22469,
+        Cai[31] => 0.22458, Cai[32] => 0.22447, Cai[33] => 0.22447, Cai[34] => 0.22421, Cai[35] => 0.22407, Cai[36] => 0.22392, 
+        Cai[37] => 0.22376, Cai[38] => 0.22359, Cai[39] => 0.22341, Cai[40] => 0.22323, Cai[41] => 0.22304, Cai[42] => 0.22284, 
+        Cai[43] => 0.22263, Cai[44] => 0.22241, Cai[45] => 0.22219,
+        i_CaJSR => 778.1041, CaNSR => CaNSR, V => -69.44916, Nai => -69.44916, Ki => 150958.8, i_b => 0.0027, i_g => 0.63674, 
+        i_d => 0.63674, i_f => 0.99862, i_fca => 0.99578, i_y => 0.99578, i_r => 0.00672, i_s => 0.97534, i_sslow => 0.22548,
+        i_Nam => 0.02272, i_Nah => 0.24062, i_Naj => 0.20256, i_PO1 => 0.20256, i_PO2 => 0, i_PC2 => 0, i_nKs => 0.09345, 
+        i_CK1 => 0.00174, i_CK2 => 0.01054, i_OK => 0.27885, i_IK =>0.08076, Cai_sub_SR => 0.22245, Cai_sub_SL => 0.22219, 
+        CaM_sl => 4.42e-2, Ca2CaM_sl => 7.34e-5, Ca4CaM_sl => 8.89e-9, 
         CaMB_sl => 2.44, Ca2CaMB_sl => 11.86, Ca4CaMB_sl => 4.38e-4, Pb2_sl => 1.47e-5, Pb_sl => 6.31e-6, Pt_sl => 6.60e-8, 
         Pt2_sl => 7.37e-13, Pa_sl => 4.37e-9, Ca4CaN_sl => 5.22e-4, CaMCa4CaN_sl => 1.98e-6, Ca2CaMCa4CaN_sl => 5.02e-6, 
         Ca4CaMCa4CaN_sl => 1.43e-3, CaM_cyt => 4.4e-2, Ca2CaM_cyt => 4.11e-5, Ca4CaM_cyt => 6.17e-10, CaMB_cyt => 4.179, 
